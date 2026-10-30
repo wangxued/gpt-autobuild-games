@@ -36,7 +36,13 @@ export function chooseRelic(player, relic) {
 export function saveRun(run) {
   try {
     const data = {
-      floor: run.floor, player: run.player, log: run.log.slice(0, 6),
+      floor: run.floor,
+      player: run.player,
+      dungeon: run.dungeon,
+      enemies: run.enemies,
+      drops: run.drops,
+      bossDefeated: run.bossDefeated,
+      log: run.log.slice(0, 6),
       timestamp: Date.now()
     };
     localStorage.setItem(SAVE_KEY, JSON.stringify(data));
@@ -49,7 +55,7 @@ export function loadRun() {
     const raw = localStorage.getItem(SAVE_KEY);
     if (!raw) return null;
     const data = JSON.parse(raw);
-    if (!data || !data.player || !Number.isFinite(data.floor)) return null;
+    if (!data || !data.player || !Number.isFinite(data.floor) || !data.dungeon?.map) return null;
     return data;
   } catch { return null; }
 }
