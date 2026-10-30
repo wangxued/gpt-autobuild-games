@@ -55,7 +55,15 @@ function beginRun(saved = null) {
   run = { floor, player, dungeon: null, enemies: [], drops: [], particles: [], paused: false, ended: false, time: 0, log: saved?.log || [], bossDefeated: false };
   ui["event-log"].replaceChildren();
   if (saved?.log?.length) saved.log.slice(0, 5).reverse().forEach(line => say(line));
-  buildFloor();
+  if (saved?.dungeon) {
+    run.dungeon = saved.dungeon;
+    run.enemies = saved.enemies || [];
+    run.drops = saved.drops || [];
+    run.bossDefeated = Boolean(saved.bossDefeated);
+    configureFloorUI();
+  } else {
+    buildFloor();
+  }
   hideOverlay();
   ui["run-state"].textContent = "灯火未熄";
   updateUI();
@@ -89,15 +97,20 @@ function buildFloor() {
     ui["boss-banner"].classList.remove("show");
     say(chapter.flavor, "gold");
   }
+  configureFloorUI();
+  toast("已进入：" + chapter.area);
+  updateUI();
+  saveRun(run);
+}
+function configureFloorUI() {
+  const chapter = CHAPTERS[Math.min(2, Math.floor((run.floor - 1) / 3))];
   ui["chapter-kicker"].textContent = "第" + roman(Math.ceil(run.floor / 3)) + "卷 · " + chapter.name;
   ui["area-name"].textContent = chapter.area;
   ui["floor-number"].textContent = roman(run.floor);
   ui.objective.textContent = chapter.objective;
   ui["quest-text"].textContent = run.floor % 3 === 0 ? "镇陵兽尚未伏诛。击败它，方可开启石门。" : "探索房间，搜寻宝匣，找到石门后继续深入。";
   ui["room-hint"].textContent = "烛火摇曳，阴风不止";
-  toast("已进入：" + chapter.area);
-  updateUI();
-  saveRun(run);
+  updateBossBar();
 }
 
 function move(dx, dy) {
@@ -112,6 +125,7 @@ function move(dx, dy) {
   const exit = run.dungeon.exit;
   if (p.x === exit.x && p.y === exit.y) reachExit();
   updateUI();
+  saveRun(run);
 }
 function canPlay() { return run && !run.paused && !run.ended && ui.overlay.classList.contains("hidden"); }
 
@@ -275,8 +289,6 @@ function damagePlayer(amount, source) {
     ]);
   }
 }
-function chooseUpgradeDummy() {}
-
 function update(dt) {
   if (!run || run.paused || run.ended || !ui.overlay.classList.contains("hidden")) return;
   const p = run.player;
