@@ -7,128 +7,786 @@
 <meta name="description" content="Ashen Vault — 一款像素风地牢冒险小游戏。">
 <title>Ashen Vault — 灰烬地窟</title>
 <style>
-:root{color-scheme:dark;--bg:#10121b;--panel:#191d2a;--line:#343b50;--gold:#f5c86b;--muted:#9ca6bc;--ink:#f1f2f7;--red:#f36b76;--green:#8fe0a2}
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:radial-gradient(ellipse at top,#20263a 0%,#10121b 62%);color:var(--ink);font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
-body{padding:22px 16px 28px}.shell{max-width:1100px;margin:auto}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 0 16px}.brand{display:flex;align-items:center;gap:12px}.sigil{width:42px;height:42px;display:grid;place-items:center;background:#32283a;border:2px solid #7b5d65;color:var(--gold);font-size:24px;box-shadow:4px 4px 0 #080a10}.eyebrow{font-size:10px;letter-spacing:.24em;color:var(--gold);margin-bottom:4px}.brand h1{font-size:clamp(18px,3vw,26px);letter-spacing:.04em;margin:0}.topnote{font-size:11px;color:var(--muted);text-align:right;line-height:1.6}
-.layout{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:14px;align-items:start}.gameframe,.panel{border:1px solid var(--line);background:rgba(20,23,34,.94);box-shadow:0 14px 45px #0004}.gameframe{padding:10px}.screenhead{display:flex;justify-content:space-between;align-items:center;padding:3px 4px 10px;color:var(--muted);font-size:11px}.live{color:var(--green)}.canvaswrap{position:relative;background:#090b12;border:1px solid #30364a;overflow:hidden;line-height:0}canvas{display:block;width:100%;height:auto;image-rendering:pixelated;image-rendering:crisp-edges;touch-action:none}.overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:16px;background:#090b12c9;line-height:1.5}.overlay.hidden{display:none}.modal{width:min(100%,420px);text-align:center;background:#171b29;border:1px solid #55536b;padding:24px 20px;box-shadow:8px 8px 0 #080a10}.modal .glyph{font-size:40px;color:var(--gold);margin-bottom:8px}.modal h2{font-size:20px;margin:0 0 10px}.modal p{font-size:12px;color:#b9c1d1;line-height:1.8;margin:0 0 18px}.btn{font:inherit;font-size:12px;cursor:pointer;border:1px solid #796849;background:#332b22;color:#ffe2a1;padding:11px 16px;transition:transform .1s,background .1s}.btn:hover{background:#4a3a28;transform:translateY(-1px)}.btn:focus-visible{outline:2px solid var(--gold);outline-offset:3px}.btn.primary{background:#b47b35;border-color:#f0c26b;color:#17120b;font-weight:800}.btn.secondary{background:#202637;border-color:#454e66;color:#dbe1f2}.actions{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}.side{display:grid;gap:12px}.panel{padding:14px}.panel h3{font-size:11px;letter-spacing:.16em;color:var(--gold);margin:0 0 13px;text-transform:uppercase}.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}.stat .label{font-size:10px;color:var(--muted);margin-bottom:5px}.stat .value{font-size:20px;font-weight:800}.bar{height:6px;background:#34384a;margin-top:7px;overflow:hidden}.bar span{display:block;height:100%;width:100%;transition:width .15s}.hp span{background:var(--red)}.xp span{background:#b78bfa}.statwide{grid-column:1/-1}.minirow{display:flex;justify-content:space-between;gap:8px;font-size:11px;margin:9px 0;color:#c4cada}.minirow b{color:#fff}.controls{display:grid;grid-template-columns:1fr 1fr;gap:8px}.key{display:inline-grid;place-items:center;min-width:23px;height:22px;padding:0 5px;border:1px solid #48516a;border-bottom-width:3px;border-radius:3px;color:#f2e3bd;background:#242a3a;font-size:10px}.control{font-size:10px;color:#bdc5d6;line-height:1.8}.control .key{margin-right:4px}.log{font-size:10px;color:#aeb8cb;line-height:1.75;min-height:82px}.log div{border-bottom:1px solid #2a3040;padding:3px 0}.log .good{color:var(--green)}.log .bad{color:#ff9098}.log .gold{color:var(--gold)}.footer{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;color:#737f98;font-size:10px;padding:12px 2px 0}.mobilebar{display:none}
-@media(max-width:800px){body{padding:14px 10px 24px}.layout{grid-template-columns:1fr}.side{grid-template-columns:1fr 1fr}.side .panel:last-child{grid-column:1/-1}.topnote{display:none}}
-@media(max-width:480px){.side{grid-template-columns:1fr 1fr}.panel{padding:11px}.controls{grid-template-columns:1fr}.top{margin-bottom:10px}.gameframe{padding:6px}.mobilebar{display:flex;justify-content:space-between;gap:8px;margin-top:9px}.mobilebar button{flex:1;min-height:42px}.footer{font-size:9px}}
+:root {
+  color-scheme:dark;
+  --bg:#10121b;
+  --panel:#191d2a;
+  --line:#343b50;
+  --gold:#f5c86b;
+  --muted:#9ca6bc;
+  --ink:#f1f2f7;
+  --red:#f36b76;
+  --green:#8fe0a2
+}
+* {
+  box-sizing:border-box
+}
+html,body {
+  margin:0;
+  min-height:100%;
+  background:radial-gradient(ellipse at top,#20263a 0%,#10121b 62%);
+  color:var(--ink);
+  font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace
+}
+body {
+  padding:22px 16px 28px
+}
+.shell {
+  max-width:1100px;
+  margin:auto
+}
+.top {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  margin:0 0 16px
+}
+.brand {
+  display:flex;
+  align-items:center;
+  gap:12px
+}
+.sigil {
+  width:42px;
+  height:42px;
+  display:grid;
+  place-items:center;
+  background:#32283a;
+  border:2px solid #7b5d65;
+  color:var(--gold);
+  font-size:24px;
+  box-shadow:4px 4px 0 #080a10
+}
+.eyebrow {
+  font-size:10px;
+  letter-spacing:.24em;
+  color:var(--gold);
+  margin-bottom:4px
+}
+.brand h1 {
+  font-size:clamp(18px,3vw,26px);
+  letter-spacing:.04em;
+  margin:0
+}
+.topnote {
+  font-size:11px;
+  color:var(--muted);
+  text-align:right;
+  line-height:1.6
+}
+.layout {
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 270px;
+  gap:14px;
+  align-items:start
+}
+.gameframe,.panel {
+  border:1px solid var(--line);
+  background:rgba(20,23,34,.94);
+  box-shadow:0 14px 45px #0004
+}
+.gameframe {
+  padding:10px
+}
+.screenhead {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:3px 4px 10px;
+  color:var(--muted);
+  font-size:11px
+}
+.live {
+  color:var(--green)
+}
+.canvaswrap {
+  position:relative;
+  background:#090b12;
+  border:1px solid #30364a;
+  overflow:hidden;
+  line-height:0
+}
+canvas {
+  display:block;
+  width:100%;
+  height:auto;
+  image-rendering:pixelated;
+  image-rendering:crisp-edges;
+  touch-action:none
+}
+.overlay {
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:16px;
+  background:#090b12c9;
+  line-height:1.5
+}
+.overlay.hidden {
+  display:none
+}
+.modal {
+  width:min(100%,420px);
+  text-align:center;
+  background:#171b29;
+  border:1px solid #55536b;
+  padding:24px 20px;
+  box-shadow:8px 8px 0 #080a10
+}
+.modal .glyph {
+  font-size:40px;
+  color:var(--gold);
+  margin-bottom:8px
+}
+.modal h2 {
+  font-size:20px;
+  margin:0 0 10px
+}
+.modal p {
+  font-size:12px;
+  color:#b9c1d1;
+  line-height:1.8;
+  margin:0 0 18px
+}
+.btn {
+  font:inherit;
+  font-size:12px;
+  cursor:pointer;
+  border:1px solid #796849;
+  background:#332b22;
+  color:#ffe2a1;
+  padding:11px 16px;
+  transition:transform .1s,background .1s
+}
+.btn:hover {
+  background:#4a3a28;
+  transform:translateY(-1px)
+}
+.btn:focus-visible {
+  outline:2px solid var(--gold);
+  outline-offset:3px
+}
+.btn.primary {
+  background:#b47b35;
+  border-color:#f0c26b;
+  color:#17120b;
+  font-weight:800
+}
+.btn.secondary {
+  background:#202637;
+  border-color:#454e66;
+  color:#dbe1f2
+}
+.actions {
+  display:flex;
+  justify-content:center;
+  gap:8px;
+  flex-wrap:wrap
+}
+.side {
+  display:grid;
+  gap:12px
+}
+.panel {
+  padding:14px
+}
+.panel h3 {
+  font-size:11px;
+  letter-spacing:.16em;
+  color:var(--gold);
+  margin:0 0 13px;
+  text-transform:uppercase
+}
+.stats {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px
+}
+.stat .label {
+  font-size:10px;
+  color:var(--muted);
+  margin-bottom:5px
+}
+.stat .value {
+  font-size:20px;
+  font-weight:800
+}
+.bar {
+  height:6px;
+  background:#34384a;
+  margin-top:7px;
+  overflow:hidden
+}
+.bar span {
+  display:block;
+  height:100%;
+  width:100%;
+  transition:width .15s
+}
+.hp span {
+  background:var(--red)
+}
+.xp span {
+  background:#b78bfa
+}
+.statwide {
+  grid-column:1/-1
+}
+.minirow {
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  font-size:11px;
+  margin:9px 0;
+  color:#c4cada
+}
+.minirow b {
+  color:#fff
+}
+.controls {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px
+}
+.key {
+  display:inline-grid;
+  place-items:center;
+  min-width:23px;
+  height:22px;
+  padding:0 5px;
+  border:1px solid #48516a;
+  border-bottom-width:3px;
+  border-radius:3px;
+  color:#f2e3bd;
+  background:#242a3a;
+  font-size:10px
+}
+.control {
+  font-size:10px;
+  color:#bdc5d6;
+  line-height:1.8
+}
+.control .key {
+  margin-right:4px
+}
+.log {
+  font-size:10px;
+  color:#aeb8cb;
+  line-height:1.75;
+  min-height:82px
+}
+.log div {
+  border-bottom:1px solid #2a3040;
+  padding:3px 0
+}
+.log .good {
+  color:var(--green)
+}
+.log .bad {
+  color:#ff9098
+}
+.log .gold {
+  color:var(--gold)
+}
+.footer {
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap;
+  color:#737f98;
+  font-size:10px;
+  padding:12px 2px 0
+}
+.mobilebar {
+  display:none
+}
+@media(max-width:800px) {
+  body {
+  padding:14px 10px 24px
+}
+.layout {
+  grid-template-columns:1fr
+}
+.side {
+  grid-template-columns:1fr 1fr
+}
+.side .panel:last-child {
+  grid-column:1/-1
+}
+.topnote {
+  display:none
+}
+
+}
+@media(max-width:480px) {
+  .side {
+  grid-template-columns:1fr 1fr
+}
+.panel {
+  padding:11px
+}
+.controls {
+  grid-template-columns:1fr
+}
+.top {
+  margin-bottom:10px
+}
+.gameframe {
+  padding:6px
+}
+.mobilebar {
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  margin-top:9px
+}
+.mobilebar button {
+  flex:1;
+  min-height:42px
+}
+.footer {
+  font-size:9px
+}
+
+}
 </style>
 </head>
 <body>
 <div class="shell">
-<header class="top"><div class="brand"><div class="sigil">✦</div><div><div class="eyebrow">A PIXEL DUNGEON RPG</div><h1>ASHEN VAULT <span style="color:#9ca6bc;font-size:.7em">/ 灰烬地窟</span></h1></div></div><div class="topnote">探索 · 战斗 · 成长<br>没有光的地方，勇气就是火种。</div></header>
+<header class="top">
+<div class="brand">
+<div class="sigil">✦</div>
+<div>
+<div class="eyebrow">A PIXEL DUNGEON RPG</div>
+<h1>ASHEN VAULT <span style="color:#9ca6bc;font-size:.7em">/ 灰烬地窟</span>
+</h1>
+</div>
+</div>
+<div class="topnote">探索 · 战斗 · 成长<br>没有光的地方，勇气就是火种。</div>
+</header>
 <main class="layout">
 <section class="gameframe">
-<div class="screenhead"><span id="floorLabel">区域 01 · 被遗忘的地窟</span><span class="live" id="stateLabel">● 等待冒险者</span></div>
-<div class="canvaswrap"><canvas id="game" width="640" height="448" aria-label="灰烬地窟游戏画面"></canvas>
-<div class="overlay" id="overlay"><div class="modal"><div class="glyph">♜</div><div class="eyebrow">THE VAULT IS CALLING</div><h2 id="modalTitle">灰烬之下，古老之门开启</h2><p id="modalText">深入地窟，击败守卫，找到通往下一层的出口。每一次探索，都是一场新的冒险。</p><div class="actions"><button class="btn primary" id="startBtn">开始探险</button><button class="btn secondary" id="howBtn">操作说明</button></div></div></div>
+<div class="screenhead">
+<span id="floorLabel">区域 01 · 被遗忘的地窟</span>
+<span class="live" id="stateLabel">● 等待冒险者</span>
 </div>
-<div class="mobilebar"><button class="btn secondary" data-action="left">◀ 左</button><button class="btn secondary" data-action="up">▲ 上</button><button class="btn secondary" data-action="down">▼ 下</button><button class="btn secondary" data-action="right">右 ▶</button><button class="btn" data-action="attack">⚔ 攻击</button></div>
-<div class="footer"><span>WASD / 方向键移动 · Space 攻击 · Shift 闪避</span><span>自动保存：本局不保存进度</span></div>
+<div class="canvaswrap">
+<canvas id="game" width="640" height="448" aria-label="灰烬地窟游戏画面">
+</canvas>
+<div class="overlay" id="overlay">
+<div class="modal">
+<div class="glyph">♜</div>
+<div class="eyebrow">THE VAULT IS CALLING</div>
+<h2 id="modalTitle">灰烬之下，古老之门开启</h2>
+<p id="modalText">深入地窟，击败守卫，找到通往下一层的出口。每一次探索，都是一场新的冒险。</p>
+<div class="actions">
+<button class="btn primary" id="startBtn">开始探险</button>
+<button class="btn secondary" id="howBtn">操作说明</button>
+</div>
+</div>
+</div>
+</div>
+<div class="mobilebar">
+<button class="btn secondary" data-action="left">◀ 左</button>
+<button class="btn secondary" data-action="up">▲ 上</button>
+<button class="btn secondary" data-action="down">▼ 下</button>
+<button class="btn secondary" data-action="right">右 ▶</button>
+<button class="btn" data-action="attack">⚔ 攻击</button>
+</div>
+<div class="footer">
+<span>WASD / 方向键移动 · Space 攻击 · Shift 闪避</span>
+<span>自动保存：本局不保存进度</span>
+</div>
 </section>
 <aside class="side">
-<section class="panel"><h3>冒险者状态</h3><div class="stats">
-<div class="stat"><div class="label">生命值 HP</div><div class="value" id="hpText">100/100</div><div class="bar hp"><span id="hpBar"></span></div></div>
-<div class="stat"><div class="label">经验值 XP</div><div class="value" id="xpText">0 / 30</div><div class="bar xp"><span id="xpBar"></span></div></div>
-<div class="stat"><div class="label">攻击力</div><div class="value" id="atkText">12</div></div>
-<div class="stat"><div class="label">药水</div><div class="value" id="potText">2 <span style="font-size:11px;color:#9ca6bc">瓶</span></div></div>
-<div class="stat statwide"><div class="minirow"><span>当前层数</span><b id="floorText">1</b></div><div class="minirow"><span>击败敌人</span><b id="killsText">0</b></div><div class="minirow"><span>金币</span><b id="goldText" style="color:var(--gold)">0</b></div></div>
-</div></section>
-<section class="panel"><h3>旅途指南</h3><div class="controls">
-<div class="control"><span class="key">W</span><span class="key">A</span><span class="key">S</span><span class="key">D</span><br>移动 / 走位</div>
-<div class="control"><span class="key">SPACE</span><br>近战攻击</div>
-<div class="control"><span class="key">SHIFT</span><br>短距闪避</div>
-<div class="control"><span class="key">Q</span><br>饮用生命药水</div>
-<div class="control"><span class="key">E</span><br>进入下一层</div>
-<div class="control"><span class="key">P</span><br>暂停 / 继续</div>
-</div></section>
-<section class="panel"><h3>地窟日志</h3><div class="log" id="log"><div>火把微弱地燃烧着……</div><div>你听见黑暗深处有脚步声。</div></div></section>
+<section class="panel">
+<h3>冒险者状态</h3>
+<div class="stats">
+<div class="stat">
+<div class="label">生命值 HP</div>
+<div class="value" id="hpText">100/100</div>
+<div class="bar hp">
+<span id="hpBar">
+</span>
+</div>
+</div>
+<div class="stat">
+<div class="label">经验值 XP</div>
+<div class="value" id="xpText">0 / 30</div>
+<div class="bar xp">
+<span id="xpBar">
+</span>
+</div>
+</div>
+<div class="stat">
+<div class="label">攻击力</div>
+<div class="value" id="atkText">12</div>
+</div>
+<div class="stat">
+<div class="label">药水</div>
+<div class="value" id="potText">2 <span style="font-size:11px;color:#9ca6bc">瓶</span>
+</div>
+</div>
+<div class="stat statwide">
+<div class="minirow">
+<span>当前层数</span>
+<b id="floorText">1</b>
+</div>
+<div class="minirow">
+<span>击败敌人</span>
+<b id="killsText">0</b>
+</div>
+<div class="minirow">
+<span>金币</span>
+<b id="goldText" style="color:var(--gold)">0</b>
+</div>
+</div>
+</div>
+</section>
+<section class="panel">
+<h3>旅途指南</h3>
+<div class="controls">
+<div class="control">
+<span class="key">W</span>
+<span class="key">A</span>
+<span class="key">S</span>
+<span class="key">D</span>
+<br>移动 / 走位</div>
+<div class="control">
+<span class="key">SPACE</span>
+<br>近战攻击</div>
+<div class="control">
+<span class="key">SHIFT</span>
+<br>短距闪避</div>
+<div class="control">
+<span class="key">Q</span>
+<br>饮用生命药水</div>
+<div class="control">
+<span class="key">E</span>
+<br>进入下一层</div>
+<div class="control">
+<span class="key">P</span>
+<br>暂停 / 继续</div>
+</div>
+</section>
+<section class="panel">
+<h3>地窟日志</h3>
+<div class="log" id="log">
+<div>火把微弱地燃烧着……</div>
+<div>你听见黑暗深处有脚步声。</div>
+</div>
+</section>
 </aside>
 </main>
 </div>
 <script>
-(()=>{'use strict';
-const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');
-ctx.imageSmoothingEnabled=false;
-const W=640,H=448,T=32,COLS=W/T,ROWS=H/T;
-const $=id=>document.getElementById(id);
-const keys=new Set();let game=null,last=0,acc=0,overlayMode='title',touchMove=null;
-const rand=(a,b)=>Math.floor(Math.random()*(b-a+1))+a,clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
-function log(msg,type=''){const el=document.createElement('div');el.textContent=msg;if(type)el.className=type;$('log').prepend(el);while($('log').children.length>6)$('log').lastChild.remove()}
-function emptyGame(){return {running:false,paused:false,over:false,floor:1,kills:0,gold:0,xp:0,nextXp:30,level:1,atk:12,maxHp:100,hp:100,potions:2,player:{x:2,y:2,face:{x:1,y:0},invuln:0,dodge:0,attack:0,walk:0},map:[],enemies:[],items:[],exit:{x:COLS-3,y:ROWS-3},tick:0,shake:0}}
-function carveMap(){
- const m=Array.from({length:ROWS},(_,y)=>Array.from({length:COLS},(_,x)=>(x===0||y===0||x===COLS-1||y===ROWS-1)?1:0));
- for(let y=2;y<ROWS-2;y++)for(let x=2;x<COLS-2;x++)if(Math.random()<.12)m[y][x]=1;
- // keep spawn and exit corridors clear
- for(let y=1;y<6;y++)for(let x=1;x<7;x++)m[y][x]=0;
- for(let y=ROWS-7;y<ROWS-1;y++)for(let x=COLS-8;x<COLS-1;x++)m[y][x]=0;
- // carve several connecting corridors so procedural rooms stay traversable
- for(let x=3;x<COLS-3;x++)if(x%5!==0)m[6][x]=0;
- for(let y=3;y<ROWS-3;y++)if(y%4!==0)m[y][Math.floor(COLS/2)]=0;
- return m;
-}
-function isWall(x,y){return !game||y<0||x<0||y>=ROWS||x>=COLS||game.map[y][x]===1}
-function occupied(x,y){return game.enemies.some(e=>e.hp>0&&e.x===x&&e.y===y)}
-function newFloor(){
- game.map=carveMap();game.player.x=2;game.player.y=2;game.player.face={x:1,y:0};game.player.invuln=.8;
- game.exit={x:COLS-3,y:ROWS-3};game.enemies=[];game.items=[];
- const count=Math.min(3+game.floor,10);
- for(let i=0;i<count;i++){
-  let x,y,tries=0;do{x=rand(3,COLS-4);y=rand(3,ROWS-4);tries++}while((isWall(x,y)||Math.abs(x-game.player.x)+Math.abs(y-game.player.y)<7||Math.abs(x-game.exit.x)+Math.abs(y-game.exit.y)<3||occupied(x,y))&&tries<200);
-  if(tries<200){const type=game.floor>=3&&i===count-1?'brute':(Math.random()<.35?'wisp':'crawler');
-   const hp=type==='brute'?52+game.floor*7:type==='wisp'?18+game.floor*3:26+game.floor*4;
-   game.enemies.push({x,y,type,hp,maxHp:hp,atk:type==='brute'?13+game.floor:type==='wisp'?7+game.floor:8+game.floor,spd:type==='wisp'?.72:type==='brute'?1.1:1.35,cool:Math.random(),flash:0});
+(()=> {
+  'use strict';
+  const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');
+  ctx.imageSmoothingEnabled=false;
+  const W=640,H=448,T=32,COLS=W/T,ROWS=H/T;
+  const $=id=>document.getElementById(id);
+  const keys=new Set();let game=null,last=0,acc=0,overlayMode='title',touchMove=null;
+  const rand=(a,b)=>Math.floor(Math.random()*(b-a+1))+a,clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+  function log(msg,type='') {
+    const el=document.createElement('div');el.textContent=msg;if(type)el.className=type;$('log').prepend(el);while($('log').children.length>6)$('log').lastChild.remove()
   }
- }
- if(game.floor%3===0){game.enemies.push({x:COLS-5,y:ROWS-5,type:'boss',hp:145+game.floor*15,maxHp:145+game.floor*15,atk:17+game.floor,spd:1.5,cool:1,flash:0});log('危险！地窟守护者正在这一层徘徊。','bad')}
- else log('你踏入了第 '+game.floor+' 层地窟。','gold');
- $('floorLabel').textContent='区域 '+String(game.floor).padStart(2,'0')+' · '+(game.floor%3===0?'守护者巢穴':'被遗忘的地窟');
-}
-function startGame(){game=emptyGame();game.running=true;overlayMode='';$('overlay').classList.add('hidden');$('stateLabel').textContent='● 探索中';$('log').innerHTML='';newFloor();updateUI();last=performance.now();requestAnimationFrame(loop)}
-function showOverlay(mode,title,text,buttons){overlayMode=mode;$('overlay').classList.remove('hidden');$('modalTitle').textContent=title;$('modalText').textContent=text;const actions=document.querySelector('.actions');actions.innerHTML='';buttons.forEach(b=>{const el=document.createElement('button');el.className='btn '+(b.primary?'primary':'secondary');el.textContent=b.label;el.onclick=b.action;actions.append(el)})}
-function pause(){if(!game||!game.running||game.over)return;game.paused=!game.paused;$('stateLabel').textContent=game.paused?'Ⅱ 已暂停':'● 探索中';if(game.paused)showOverlay('pause','稍作休整','地窟里的时间暂时停住了。准备好后继续前进。',[{label:'继续探险',primary:true,action:()=>{game.paused=false;$('overlay').classList.add('hidden');$('stateLabel').textContent='● 探索中';last=performance.now();requestAnimationFrame(loop)}},{label:'重新开始',action:startGame}]);else $('overlay').classList.add('hidden')}
-function move(dx,dy){if(!game||!game.running||game.paused||game.over)return;const p=game.player;p.face={x:dx,y:dy};const nx=p.x+dx,ny=p.y+dy;if(!isWall(nx,ny)&&!occupied(nx,ny)){p.x=nx;p.y=ny;p.walk+=1;checkTile()}}
-function checkTile(){const p=game.player;if(p.x===game.exit.x&&p.y===game.exit.y){showOverlay('exit','出口已找到','你发现通往更深处的石阶。准备好再下去，下一层会更危险。',[{label:'进入下一层',primary:true,action:()=>{game.floor++;game.hp=Math.min(game.maxHp,game.hp+12);newFloor();$('overlay').classList.add('hidden');updateUI()}},{label:'继续探索',action:()=>{$('overlay').classList.add('hidden')}}]);return}
- const idx=game.items.findIndex(i=>i.x===p.x&&i.y===p.y);if(idx>=0){const item=game.items.splice(idx,1)[0];if(item.type==='potion'){game.potions++;log('你拾起一瓶生命药水。','good')}else{game.gold+=item.value;log('你捡到了 '+item.value+' 枚金币。','gold')}updateUI()}}
-function attack(){if(!game||!game.running||game.paused||game.over)return;const p=game.player;p.attack=.22;let targets=game.enemies.filter(e=>e.hp>0&&Math.abs(e.x-p.x)<=1&&Math.abs(e.y-p.y)<=1&&Math.abs(e.x-p.x)+Math.abs(e.y-p.y)>0).sort((a,b)=>(Math.abs(a.x-p.x)+Math.abs(a.y-p.y))-(Math.abs(b.x-p.x)+Math.abs(b.y-p.y)));if(!targets.length){log('挥剑落空，黑暗没有回应。');return}const e=targets[0];const dmg=game.atk+rand(-2,4)+(game.level>1?game.level:0);e.hp-=dmg;e.flash=.18;game.shake=.1;log('你击中敌人，造成 '+dmg+' 点伤害。', 'good');if(e.hp<=0){game.kills++;game.xp+=e.type==='boss'?40:e.type==='brute'?16:10;const coin=rand(3,9)+(e.type==='boss'?25:0);game.gold+=coin;log('敌人倒下了。+'+coin+' 金币，获得经验。','gold');if(Math.random()<.18)game.items.push({x:e.x,y:e.y,type:'potion'});checkLevel()}updateUI()}
-function checkLevel(){while(game.xp>=game.nextXp){game.xp-=game.nextXp;game.level++;game.nextXp=Math.floor(game.nextXp*1.45);game.maxHp+=12;game.hp=Math.min(game.maxHp,game.hp+28);game.atk+=3;log('升级！生命上限 +12，攻击力 +3。','gold');showOverlay('level','力量正在苏醒','你升到了等级 '+game.level+'。生命值已恢复，攻击力得到提升。',[{label:'继续冒险',primary:true,action:()=>{$('overlay').classList.add('hidden');overlayMode=''}}]);}}
-function drink(){if(!game||!game.running||game.paused||game.over)return;if(game.potions<=0){log('药水已经用完了。','bad');return}if(game.hp===game.maxHp){log('你的生命值是满的，留着药水吧。');return}game.potions--;const heal=Math.min(38,game.maxHp-game.hp);game.hp+=heal;log('你饮下药水，恢复 '+heal+' 点生命。','good');updateUI()}
-function dodge(){if(!game||!game.running||game.paused||game.over)return;const p=game.player;if(p.dodge>0)return;let dx=p.face.x,dy=p.face.y;if(isWall(p.x+dx,p.y+dy)){dx=0;dy=0}for(let i=0;i<2;i++){if(!isWall(p.x+dx,p.y+dy)&&!occupied(p.x+dx,p.y+dy)){p.x+=dx;p.y+=dy}}p.dodge=.55;p.invuln=.55;p.walk+=2}
-function enemyStep(dt){const p=game.player;for(const e of game.enemies){if(e.hp<=0)continue;e.cool-=dt;e.flash=Math.max(0,e.flash-dt);const dist=Math.abs(e.x-p.x)+Math.abs(e.y-p.y);if(dist<=1){if(e.cool<=0&&p.invuln<=0){const dmg=Math.max(1,e.atk-rand(0,3));game.hp-=dmg;p.invuln=.55;game.shake=.14;log('你受到 '+dmg+' 点伤害！','bad');if(game.hp<=0){game.hp=0;game.over=true;game.running=false;$('stateLabel').textContent='✕ 冒险结束';showOverlay('dead','你倒在灰烬之中','这次探险击败了 '+game.kills+' 个敌人，收集 '+game.gold+' 枚金币。地窟还在等待下一位挑战者。',[{label:'再试一次',primary:true,action:startGame}]);}updateUI()}e.cool=e.type==='boss'?.85:1.05;continue}
- if(e.cool>0)continue;
- if(dist<9){let dx=0,dy=0;if(Math.abs(p.x-e.x)>Math.abs(p.y-e.y))dx=Math.sign(p.x-e.x);else dy=Math.sign(p.y-e.y);if(!isWall(e.x+dx,e.y+dy)&&!occupied(e.x+dx,e.y+dy)){e.x+=dx;e.y+=dy}else{const opts=[[1,0],[-1,0],[0,1],[0,-1]].sort(()=>Math.random()-.5);for(const [ox,oy] of opts)if(!isWall(e.x+ox,e.y+oy)&&!occupied(e.x+ox,e.y+oy)){e.x+=ox;e.y+=oy;break}}}
- e.cool=e.spd;}}
-function update(dt){if(!game||!game.running||game.paused||game.over)return;game.tick+=dt;const p=game.player;p.invuln=Math.max(0,p.invuln-dt);p.dodge=Math.max(0,p.dodge-dt);p.attack=Math.max(0,p.attack-dt);game.shake=Math.max(0,game.shake-dt);
- // Keyboard repeat is time gated, making movement deliberate rather than teleporting.
- if(!game.moveCooldown)game.moveCooldown=0;game.moveCooldown-=dt;
- if(game.moveCooldown<=0){let dx=0,dy=0;if(keys.has('arrowup')||keys.has('w'))dy=-1;else if(keys.has('arrowdown')||keys.has('s'))dy=1;else if(keys.has('arrowleft')||keys.has('a'))dx=-1;else if(keys.has('arrowright')||keys.has('d'))dx=1;if(dx||dy){move(dx,dy);game.moveCooldown=.12}}
- enemyStep(dt);if(game.tick>0&&Math.floor(game.tick)%20===0&&Math.random()<.02){const x=rand(2,COLS-3),y=rand(2,ROWS-3);if(!isWall(x,y)&&!occupied(x,y)&&!(x===p.x&&y===p.y))game.items.push({x,y,type:Math.random()<.6?'gold':'potion',value:rand(4,12)})}
-}
-function draw(){
- ctx.save();if(game&&game.shake>0){ctx.translate(rand(-2,2),rand(-2,2))}
- ctx.fillStyle='#0a0d15';ctx.fillRect(0,0,W,H);
- if(!game){drawTitleScene();ctx.restore();return}
- for(let y=0;y<ROWS;y++)for(let x=0;x<COLS;x++){const wall=game.map[y][x]===1;const px=x*T,py=y*T;if(wall){ctx.fillStyle='#242b3a';ctx.fillRect(px,py,T,T);ctx.fillStyle='#30384a';ctx.fillRect(px+2,py+2,T-4,5);ctx.fillStyle='#1a202d';ctx.fillRect(px+2,py+9,T-4,T-11);ctx.fillStyle='#171c28';ctx.fillRect(px,py+T-3,T,3)}else{ctx.fillStyle=((x*13+y*7)%5===0)?'#171d2a':'#141a26';ctx.fillRect(px,py,T,T);if((x*19+y*11)%13===0){ctx.fillStyle='#262d3c';ctx.fillRect(px+rand(3,20),py+rand(5,22),3,2)}if((x+y)%7===0){ctx.fillStyle='#202838';ctx.fillRect(px+5,py+24,2,2)}}}
- // Exit rune
- const ex=game.exit.x*T,ey=game.exit.y*T;ctx.fillStyle='#4e3a65';ctx.fillRect(ex+5,ey+5,22,22);ctx.fillStyle='#b68de8';ctx.fillRect(ex+10,ey+7,12,3);ctx.fillRect(ex+7,ey+11,3,10);ctx.fillRect(ex+22,ey+11,3,10);ctx.fillRect(ex+10,ey+22,12,3);ctx.fillStyle='#f1d8ff';ctx.fillRect(ex+14,ey+12,4,8);
- for(const i of game.items){const x=i.x*T,y=i.y*T;ctx.fillStyle=i.type==='potion'?'#e56b80':'#f3c96a';ctx.fillRect(x+11,y+10,10,12);ctx.fillStyle=i.type==='potion'?'#ffb2bd':'#fff0ae';ctx.fillRect(x+13,y+7,6,4);ctx.fillRect(x+14,y+13,3,5)}
- for(const e of game.enemies){if(e.hp<=0)continue;const x=e.x*T,y=e.y*T;if(e.flash>0){ctx.fillStyle='#fff';ctx.fillRect(x+5,y+5,22,22);continue}if(e.type==='crawler'){ctx.fillStyle='#703e4d';ctx.fillRect(x+6,y+9,20,17);ctx.fillStyle='#b85b65';ctx.fillRect(x+9,y+6,14,13);ctx.fillStyle='#f8d1a1';ctx.fillRect(x+11,y+11,3,3);ctx.fillRect(x+19,y+11,3,3);ctx.fillStyle='#4a2b39';ctx.fillRect(x+7,y+24,5,5);ctx.fillRect(x+21,y+24,5,5)}else if(e.type==='wisp'){ctx.fillStyle='#6b68c2';ctx.fillRect(x+8,y+5,16,22);ctx.fillStyle='#a9a4ff';ctx.fillRect(x+11,y+8,10,12);ctx.fillStyle='#fff1bf';ctx.fillRect(x+12,y+12,3,3);ctx.fillRect(x+19,y+12,3,3);ctx.fillStyle='#454d9a';ctx.fillRect(x+5,y+25,6,4);ctx.fillRect(x+21,y+25,6,4)}else{ctx.fillStyle=e.type==='boss'?'#7c344c':'#735b39';ctx.fillRect(x+4,y+7,24,22);ctx.fillStyle=e.type==='boss'?'#b9516b':'#b99458';ctx.fillRect(x+8,y+4,16,20);ctx.fillStyle='#ffdd9b';ctx.fillRect(x+10,y+10,4,4);ctx.fillRect(x+19,y+10,4,4);ctx.fillStyle='#3b2737';ctx.fillRect(x+6,y+25,7,5);ctx.fillRect(x+20,y+25,7,5)}
- const bw=e.type==='boss'?32:25;ctx.fillStyle='#090b11';ctx.fillRect(x+3,y-5,bw,3);ctx.fillStyle='#e66e7a';ctx.fillRect(x+3,y-5,bw*clamp(e.hp/e.maxHp,0,1),3);if(e.type==='boss'){ctx.fillStyle='#f5d28c';ctx.font='9px monospace';ctx.fillText('WARDEN',x-1,y-9)}}
- const p=game.player,x=p.x*T,y=p.y*T;if(!(p.invuln>0&&Math.floor(game.tick*18)%2===0)){ctx.fillStyle='#0b111b';ctx.fillRect(x+5,y+23,23,8);ctx.fillStyle='#3b6681';ctx.fillRect(x+7,y+10,18,16);ctx.fillStyle='#83b9cb';ctx.fillRect(x+9,y+5,14,12);ctx.fillStyle='#e5d4ac';ctx.fillRect(x+11,y+9,3,3);ctx.fillRect(x+19,y+9,3,3);ctx.fillStyle='#c9d6e7';ctx.fillRect(x+8,y+18,16,5);ctx.fillStyle='#f1d5a1';if(p.face.x===1){ctx.fillRect(x+22,y+14,12,3);ctx.fillRect(x+29,y+11,3,9)}else if(p.face.x===-1){ctx.fillRect(x-6,y+14,12,3);ctx.fillRect(x-7,y+11,3,9)}else if(p.face.y===-1){ctx.fillRect(x+14,y-4,3,12);ctx.fillRect(x+11,y-5,9,3)}else{ctx.fillRect(x+14,y+22,3,12);ctx.fillRect(x+11,y+31,9,3)}if(p.attack>0){ctx.strokeStyle='#fff0bc';ctx.lineWidth=3;ctx.beginPath();ctx.arc(x+16,y+16,23,-1.1,1.1);ctx.stroke()}}
- // Torchlight vignette
- const g=ctx.createRadialGradient(x+16,y+16,45,x+16,y+16,265);g.addColorStop(0,'#0b0d1400');g.addColorStop(1,'#070911c9');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
- ctx.restore();
-}
-function drawTitleScene(){for(let y=0;y<ROWS;y++)for(let x=0;x<COLS;x++){ctx.fillStyle=(x+y)%3?'#151a27':'#1b2130';ctx.fillRect(x*T,y*T,T,T);if((x*7+y*11)%8===0){ctx.fillStyle='#293247';ctx.fillRect(x*T+5,y*T+7,22,3)}}ctx.fillStyle='#a98a59';ctx.fillRect(300,120,40,70);ctx.fillStyle='#e5bd6e';ctx.fillRect(307,127,26,56);ctx.fillStyle='#f4df9b';ctx.fillRect(313,135,14,40);ctx.fillStyle='#0a0d15';ctx.fillRect(314,143,12,24);ctx.fillStyle='#b4a0da';ctx.fillRect(304,206,32,4);ctx.fillRect(309,214,22,3)}
-function updateUI(){if(!game)return;$('hpText').textContent=game.hp+'/'+game.maxHp;$('hpBar').style.width=(100*game.hp/game.maxHp)+'%';$('xpText').textContent=game.xp+' / '+game.nextXp;$('xpBar').style.width=(100*game.xp/game.nextXp)+'%';$('atkText').textContent=game.atk;$('potText').innerHTML=game.potions+' <span style="font-size:11px;color:#9ca6bc">瓶</span>';$('floorText').textContent=game.floor;$('killsText').textContent=game.kills;$('goldText').textContent=game.gold}
-function loop(now){if(!game||!game.running)return;const dt=Math.min(.05,(now-last)/1000||0);last=now;update(dt);draw();if(game.running)requestAnimationFrame(loop)}
-function action(a){if(a==='left')move(-1,0);if(a==='right')move(1,0);if(a==='up')move(0,-1);if(a==='down')move(0,1);if(a==='attack')attack()}
-document.addEventListener('keydown',e=>{const k=e.key.toLowerCase();if(['arrowup','arrowdown','arrowleft','arrowright',' ','shift'].includes(k))e.preventDefault();if(k==='p'){pause();return}if(k==='q'){drink();return}if(k==='shift'){dodge();return}if(k===' '){if(!keys.has(' '))attack();keys.add(' ');return}if(k==='e'){if(game&&game.running&&!game.paused&&game.player.x===game.exit.x&&game.player.y===game.exit.y)checkTile();return}keys.add(k)});
-document.addEventListener('keyup',e=>keys.delete(e.key.toLowerCase()));window.addEventListener('blur',()=>keys.clear());
-$('startBtn').onclick=startGame;$('howBtn').onclick=()=>showOverlay('how','如何在地窟中生存','WASD 或方向键移动；Space 朝面向方向附近攻击；Shift 朝面向方向闪避并短暂无敌；Q 喝药水。击败敌人获得经验和金币，升级会提升攻击力与生命上限。找到紫色出口进入下一层。',[{label:'明白了，开始探险',primary:true,action:startGame}]);
-document.querySelectorAll('[data-action]').forEach(b=>{const act=()=>action(b.dataset.action);b.addEventListener('click',act);b.addEventListener('touchstart',e=>{e.preventDefault();act()},{passive:false})});
-draw();})();
+  function emptyGame() {
+    return  {
+      running:false,paused:false,over:false,floor:1,kills:0,gold:0,xp:0,nextXp:30,level:1,atk:12,maxHp:100,hp:100,potions:2,player: {
+        x:2,y:2,face: {
+          x:1,y:0
+        },invuln:0,dodge:0,attack:0,walk:0
+      },map:[],enemies:[],items:[],exit: {
+        x:COLS-3,y:ROWS-3
+      },tick:0,shake:0
+    }
+  }
+  function carveMap() {
+    const m=Array.from( {
+      length:ROWS
+    },(_,y)=>Array.from( {
+      length:COLS
+    },(_,x)=>(x===0||y===0||x===COLS-1||y===ROWS-1)?1:0));
+    for(let y=2;y<ROWS-2;y++)for(let x=2;x<COLS-2;x++)if(Math.random()<.12)m[y][x]=1;
+    // keep spawn and exit corridors clear
+    for(let y=1;y<6;y++)for(let x=1;x<7;x++)m[y][x]=0;
+    for(let y=ROWS-7;y<ROWS-1;y++)for(let x=COLS-8;x<COLS-1;x++)m[y][x]=0;
+    // carve several connecting corridors so procedural rooms stay traversable
+    for(let x=3;x<COLS-3;x++)if(x%5!==0)m[6][x]=0;
+    for(let y=3;y<ROWS-3;y++)if(y%4!==0)m[y][Math.floor(COLS/2)]=0;
+    return m;
+  }
+  function isWall(x,y) {
+    return !game||y<0||x<0||y>=ROWS||x>=COLS||game.map[y][x]===1
+  }
+  function occupied(x,y) {
+    return game.enemies.some(e=>e.hp>0&&e.x===x&&e.y===y)
+  }
+  function newFloor() {
+    game.map=carveMap();game.player.x=2;game.player.y=2;game.player.face= {
+      x:1,y:0
+    };game.player.invuln=.8;
+    game.exit= {
+      x:COLS-3,y:ROWS-3
+    };game.enemies=[];game.items=[];
+    const count=Math.min(3+game.floor,10);
+    for(let i=0;i<count;i++) {
+      let x,y,tries=0;do {
+        x=rand(3,COLS-4);y=rand(3,ROWS-4);tries++
+      }
+      while((isWall(x,y)||Math.abs(x-game.player.x)+Math.abs(y-game.player.y)<7||Math.abs(x-game.exit.x)+Math.abs(y-game.exit.y)<3||occupied(x,y))&&tries<200);
+      if(tries<200) {
+        const type=game.floor>=3&&i===count-1?'brute':(Math.random()<.35?'wisp':'crawler');
+        const hp=type==='brute'?52+game.floor*7:type==='wisp'?18+game.floor*3:26+game.floor*4;
+        game.enemies.push( {
+          x,y,type,hp,maxHp:hp,atk:type==='brute'?13+game.floor:type==='wisp'?7+game.floor:8+game.floor,spd:type==='wisp'?.72:type==='brute'?1.1:1.35,cool:Math.random(),flash:0
+        });
+      }
+    }
+    if(game.floor%3===0) {
+      game.enemies.push( {
+        x:COLS-5,y:ROWS-5,type:'boss',hp:145+game.floor*15,maxHp:145+game.floor*15,atk:17+game.floor,spd:1.5,cool:1,flash:0
+      });log('危险！地窟守护者正在这一层徘徊。','bad')
+    }
+    else log('你踏入了第 '+game.floor+' 层地窟。','gold');
+    $('floorLabel').textContent='区域 '+String(game.floor).padStart(2,'0')+' · '+(game.floor%3===0?'守护者巢穴':'被遗忘的地窟');
+  }
+  function startGame() {
+    game=emptyGame();game.running=true;overlayMode='';$('overlay').classList.add('hidden');$('stateLabel').textContent='● 探索中';$('log').innerHTML='';newFloor();updateUI();last=performance.now();requestAnimationFrame(loop)
+  }
+  function showOverlay(mode,title,text,buttons) {
+    overlayMode=mode;$('overlay').classList.remove('hidden');$('modalTitle').textContent=title;$('modalText').textContent=text;const actions=document.querySelector('.actions');actions.innerHTML='';buttons.forEach(b=> {
+      const el=document.createElement('button');el.className='btn '+(b.primary?'primary':'secondary');el.textContent=b.label;el.onclick=b.action;actions.append(el)
+    })
+  }
+  function pause() {
+    if(!game||!game.running||game.over)return;game.paused=!game.paused;$('stateLabel').textContent=game.paused?'Ⅱ 已暂停':'● 探索中';if(game.paused)showOverlay('pause','稍作休整','地窟里的时间暂时停住了。准备好后继续前进。',[ {
+      label:'继续探险',primary:true,action:()=> {
+        game.paused=false;$('overlay').classList.add('hidden');$('stateLabel').textContent='● 探索中';last=performance.now();requestAnimationFrame(loop)
+      }
+    }, {
+      label:'重新开始',action:startGame
+    }]);else $('overlay').classList.add('hidden')
+  }
+  function move(dx,dy) {
+    if(!game||!game.running||game.paused||game.over)return;const p=game.player;p.face= {
+      x:dx,y:dy
+    };const nx=p.x+dx,ny=p.y+dy;if(!isWall(nx,ny)&&!occupied(nx,ny)) {
+      p.x=nx;p.y=ny;p.walk+=1;checkTile()
+    }
+  }
+  function checkTile() {
+    const p=game.player;if(p.x===game.exit.x&&p.y===game.exit.y) {
+      showOverlay('exit','出口已找到','你发现通往更深处的石阶。准备好再下去，下一层会更危险。',[ {
+        label:'进入下一层',primary:true,action:()=> {
+          game.floor++;game.hp=Math.min(game.maxHp,game.hp+12);newFloor();$('overlay').classList.add('hidden');updateUI()
+        }
+      }, {
+        label:'继续探索',action:()=> {
+          $('overlay').classList.add('hidden')
+        }
+      }]);return
+    }
+    const idx=game.items.findIndex(i=>i.x===p.x&&i.y===p.y);if(idx>=0) {
+      const item=game.items.splice(idx,1)[0];if(item.type==='potion') {
+        game.potions++;log('你拾起一瓶生命药水。','good')
+      } else {
+        game.gold+=item.value;log('你捡到了 '+item.value+' 枚金币。','gold')
+      }
+      updateUI()
+    }
+  }
+  function attack() {
+    if(!game||!game.running||game.paused||game.over)return;const p=game.player;p.attack=.22;let targets=game.enemies.filter(e=>e.hp>0&&Math.abs(e.x-p.x)<=1&&Math.abs(e.y-p.y)<=1&&Math.abs(e.x-p.x)+Math.abs(e.y-p.y)>0).sort((a,b)=>(Math.abs(a.x-p.x)+Math.abs(a.y-p.y))-(Math.abs(b.x-p.x)+Math.abs(b.y-p.y)));if(!targets.length) {
+      log('挥剑落空，黑暗没有回应。');return
+    }
+    const e=targets[0];const dmg=game.atk+rand(-2,4)+(game.level>1?game.level:0);e.hp-=dmg;e.flash=.18;game.shake=.1;log('你击中敌人，造成 '+dmg+' 点伤害。', 'good');if(e.hp<=0) {
+      game.kills++;game.xp+=e.type==='boss'?40:e.type==='brute'?16:10;const coin=rand(3,9)+(e.type==='boss'?25:0);game.gold+=coin;log('敌人倒下了。+'+coin+' 金币，获得经验。','gold');if(Math.random()<.18)game.items.push( {
+        x:e.x,y:e.y,type:'potion'
+      });checkLevel()
+    }
+    updateUI()
+  }
+  function checkLevel() {
+    while(game.xp>=game.nextXp) {
+      game.xp-=game.nextXp;game.level++;game.nextXp=Math.floor(game.nextXp*1.45);game.maxHp+=12;game.hp=Math.min(game.maxHp,game.hp+28);game.atk+=3;log('升级！生命上限 +12，攻击力 +3。','gold');showOverlay('level','力量正在苏醒','你升到了等级 '+game.level+'。生命值已恢复，攻击力得到提升。',[ {
+        label:'继续冒险',primary:true,action:()=> {
+          $('overlay').classList.add('hidden');overlayMode=''
+        }
+      }]);
+    }
+  }
+  function drink() {
+    if(!game||!game.running||game.paused||game.over)return;if(game.potions<=0) {
+      log('药水已经用完了。','bad');return
+    }
+    if(game.hp===game.maxHp) {
+      log('你的生命值是满的，留着药水吧。');return
+    }
+    game.potions--;const heal=Math.min(38,game.maxHp-game.hp);game.hp+=heal;log('你饮下药水，恢复 '+heal+' 点生命。','good');updateUI()
+  }
+  function dodge() {
+    if(!game||!game.running||game.paused||game.over)return;const p=game.player;if(p.dodge>0)return;let dx=p.face.x,dy=p.face.y;if(isWall(p.x+dx,p.y+dy)) {
+      dx=0;dy=0
+    }
+    for(let i=0;i<2;i++) {
+      if(!isWall(p.x+dx,p.y+dy)&&!occupied(p.x+dx,p.y+dy)) {
+        p.x+=dx;p.y+=dy
+      }
+    }
+    p.dodge=.55;p.invuln=.55;p.walk+=2
+  }
+  function enemyStep(dt) {
+    const p=game.player;for(const e of game.enemies) {
+      if(e.hp<=0)continue;e.cool-=dt;e.flash=Math.max(0,e.flash-dt);const dist=Math.abs(e.x-p.x)+Math.abs(e.y-p.y);if(dist<=1) {
+        if(e.cool<=0&&p.invuln<=0) {
+          const dmg=Math.max(1,e.atk-rand(0,3));game.hp-=dmg;p.invuln=.55;game.shake=.14;log('你受到 '+dmg+' 点伤害！','bad');if(game.hp<=0) {
+            game.hp=0;game.over=true;game.running=false;$('stateLabel').textContent='✕ 冒险结束';showOverlay('dead','你倒在灰烬之中','这次探险击败了 '+game.kills+' 个敌人，收集 '+game.gold+' 枚金币。地窟还在等待下一位挑战者。',[ {
+              label:'再试一次',primary:true,action:startGame
+            }]);
+          }
+          updateUI()
+        }
+        e.cool=e.type==='boss'?.85:1.05;continue
+      }
+      if(e.cool>0)continue;
+      if(dist<9) {
+        let dx=0,dy=0;if(Math.abs(p.x-e.x)>Math.abs(p.y-e.y))dx=Math.sign(p.x-e.x);else dy=Math.sign(p.y-e.y);if(!isWall(e.x+dx,e.y+dy)&&!occupied(e.x+dx,e.y+dy)) {
+          e.x+=dx;e.y+=dy
+        } else {
+          const opts=[[1,0],[-1,0],[0,1],[0,-1]].sort(()=>Math.random()-.5);for(const [ox,oy] of opts)if(!isWall(e.x+ox,e.y+oy)&&!occupied(e.x+ox,e.y+oy)) {
+            e.x+=ox;e.y+=oy;break
+          }
+        }
+      }
+      e.cool=e.spd;
+    }
+  }
+  function update(dt) {
+    if(!game||!game.running||game.paused||game.over)return;game.tick+=dt;const p=game.player;p.invuln=Math.max(0,p.invuln-dt);p.dodge=Math.max(0,p.dodge-dt);p.attack=Math.max(0,p.attack-dt);game.shake=Math.max(0,game.shake-dt);
+    // Keyboard repeat is time gated, making movement deliberate rather than teleporting.
+    if(!game.moveCooldown)game.moveCooldown=0;game.moveCooldown-=dt;
+    if(game.moveCooldown<=0) {
+      let dx=0,dy=0;if(keys.has('arrowup')||keys.has('w'))dy=-1;else if(keys.has('arrowdown')||keys.has('s'))dy=1;else if(keys.has('arrowleft')||keys.has('a'))dx=-1;else if(keys.has('arrowright')||keys.has('d'))dx=1;if(dx||dy) {
+        move(dx,dy);game.moveCooldown=.12
+      }
+    }
+    enemyStep(dt);if(game.tick>0&&Math.floor(game.tick)%20===0&&Math.random()<.02) {
+      const x=rand(2,COLS-3),y=rand(2,ROWS-3);if(!isWall(x,y)&&!occupied(x,y)&&!(x===p.x&&y===p.y))game.items.push( {
+        x,y,type:Math.random()<.6?'gold':'potion',value:rand(4,12)
+      })
+    }
+  }
+  function draw() {
+    ctx.save();if(game&&game.shake>0) {
+      ctx.translate(rand(-2,2),rand(-2,2))
+    }
+    ctx.fillStyle='#0a0d15';ctx.fillRect(0,0,W,H);
+    if(!game) {
+      drawTitleScene();ctx.restore();return
+    }
+    for(let y=0;y<ROWS;y++)for(let x=0;x<COLS;x++) {
+      const wall=game.map[y][x]===1;const px=x*T,py=y*T;if(wall) {
+        ctx.fillStyle='#242b3a';ctx.fillRect(px,py,T,T);ctx.fillStyle='#30384a';ctx.fillRect(px+2,py+2,T-4,5);ctx.fillStyle='#1a202d';ctx.fillRect(px+2,py+9,T-4,T-11);ctx.fillStyle='#171c28';ctx.fillRect(px,py+T-3,T,3)
+      } else {
+        ctx.fillStyle=((x*13+y*7)%5===0)?'#171d2a':'#141a26';ctx.fillRect(px,py,T,T);if((x*19+y*11)%13===0) {
+          ctx.fillStyle='#262d3c';ctx.fillRect(px+rand(3,20),py+rand(5,22),3,2)
+        }
+        if((x+y)%7===0) {
+          ctx.fillStyle='#202838';ctx.fillRect(px+5,py+24,2,2)
+        }
+      }
+    }
+    // Exit rune
+    const ex=game.exit.x*T,ey=game.exit.y*T;ctx.fillStyle='#4e3a65';ctx.fillRect(ex+5,ey+5,22,22);ctx.fillStyle='#b68de8';ctx.fillRect(ex+10,ey+7,12,3);ctx.fillRect(ex+7,ey+11,3,10);ctx.fillRect(ex+22,ey+11,3,10);ctx.fillRect(ex+10,ey+22,12,3);ctx.fillStyle='#f1d8ff';ctx.fillRect(ex+14,ey+12,4,8);
+    for(const i of game.items) {
+      const x=i.x*T,y=i.y*T;ctx.fillStyle=i.type==='potion'?'#e56b80':'#f3c96a';ctx.fillRect(x+11,y+10,10,12);ctx.fillStyle=i.type==='potion'?'#ffb2bd':'#fff0ae';ctx.fillRect(x+13,y+7,6,4);ctx.fillRect(x+14,y+13,3,5)
+    }
+    for(const e of game.enemies) {
+      if(e.hp<=0)continue;const x=e.x*T,y=e.y*T;if(e.flash>0) {
+        ctx.fillStyle='#fff';ctx.fillRect(x+5,y+5,22,22);continue
+      }
+      if(e.type==='crawler') {
+        ctx.fillStyle='#703e4d';ctx.fillRect(x+6,y+9,20,17);ctx.fillStyle='#b85b65';ctx.fillRect(x+9,y+6,14,13);ctx.fillStyle='#f8d1a1';ctx.fillRect(x+11,y+11,3,3);ctx.fillRect(x+19,y+11,3,3);ctx.fillStyle='#4a2b39';ctx.fillRect(x+7,y+24,5,5);ctx.fillRect(x+21,y+24,5,5)
+      } else if(e.type==='wisp') {
+        ctx.fillStyle='#6b68c2';ctx.fillRect(x+8,y+5,16,22);ctx.fillStyle='#a9a4ff';ctx.fillRect(x+11,y+8,10,12);ctx.fillStyle='#fff1bf';ctx.fillRect(x+12,y+12,3,3);ctx.fillRect(x+19,y+12,3,3);ctx.fillStyle='#454d9a';ctx.fillRect(x+5,y+25,6,4);ctx.fillRect(x+21,y+25,6,4)
+      } else {
+        ctx.fillStyle=e.type==='boss'?'#7c344c':'#735b39';ctx.fillRect(x+4,y+7,24,22);ctx.fillStyle=e.type==='boss'?'#b9516b':'#b99458';ctx.fillRect(x+8,y+4,16,20);ctx.fillStyle='#ffdd9b';ctx.fillRect(x+10,y+10,4,4);ctx.fillRect(x+19,y+10,4,4);ctx.fillStyle='#3b2737';ctx.fillRect(x+6,y+25,7,5);ctx.fillRect(x+20,y+25,7,5)
+      }
+      const bw=e.type==='boss'?32:25;ctx.fillStyle='#090b11';ctx.fillRect(x+3,y-5,bw,3);ctx.fillStyle='#e66e7a';ctx.fillRect(x+3,y-5,bw*clamp(e.hp/e.maxHp,0,1),3);if(e.type==='boss') {
+        ctx.fillStyle='#f5d28c';ctx.font='9px monospace';ctx.fillText('WARDEN',x-1,y-9)
+      }
+    }
+    const p=game.player,x=p.x*T,y=p.y*T;if(!(p.invuln>0&&Math.floor(game.tick*18)%2===0)) {
+      ctx.fillStyle='#0b111b';ctx.fillRect(x+5,y+23,23,8);ctx.fillStyle='#3b6681';ctx.fillRect(x+7,y+10,18,16);ctx.fillStyle='#83b9cb';ctx.fillRect(x+9,y+5,14,12);ctx.fillStyle='#e5d4ac';ctx.fillRect(x+11,y+9,3,3);ctx.fillRect(x+19,y+9,3,3);ctx.fillStyle='#c9d6e7';ctx.fillRect(x+8,y+18,16,5);ctx.fillStyle='#f1d5a1';if(p.face.x===1) {
+        ctx.fillRect(x+22,y+14,12,3);ctx.fillRect(x+29,y+11,3,9)
+      } else if(p.face.x===-1) {
+        ctx.fillRect(x-6,y+14,12,3);ctx.fillRect(x-7,y+11,3,9)
+      } else if(p.face.y===-1) {
+        ctx.fillRect(x+14,y-4,3,12);ctx.fillRect(x+11,y-5,9,3)
+      } else {
+        ctx.fillRect(x+14,y+22,3,12);ctx.fillRect(x+11,y+31,9,3)
+      }
+      if(p.attack>0) {
+        ctx.strokeStyle='#fff0bc';ctx.lineWidth=3;ctx.beginPath();ctx.arc(x+16,y+16,23,-1.1,1.1);ctx.stroke()
+      }
+    }
+    // Torchlight vignette
+    const g=ctx.createRadialGradient(x+16,y+16,45,x+16,y+16,265);g.addColorStop(0,'#0b0d1400');g.addColorStop(1,'#070911c9');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+    ctx.restore();
+  }
+  function drawTitleScene() {
+    for(let y=0;y<ROWS;y++)for(let x=0;x<COLS;x++) {
+      ctx.fillStyle=(x+y)%3?'#151a27':'#1b2130';ctx.fillRect(x*T,y*T,T,T);if((x*7+y*11)%8===0) {
+        ctx.fillStyle='#293247';ctx.fillRect(x*T+5,y*T+7,22,3)
+      }
+    }
+    ctx.fillStyle='#a98a59';ctx.fillRect(300,120,40,70);ctx.fillStyle='#e5bd6e';ctx.fillRect(307,127,26,56);ctx.fillStyle='#f4df9b';ctx.fillRect(313,135,14,40);ctx.fillStyle='#0a0d15';ctx.fillRect(314,143,12,24);ctx.fillStyle='#b4a0da';ctx.fillRect(304,206,32,4);ctx.fillRect(309,214,22,3)
+  }
+  function updateUI() {
+    if(!game)return;$('hpText').textContent=game.hp+'/'+game.maxHp;$('hpBar').style.width=(100*game.hp/game.maxHp)+'%';$('xpText').textContent=game.xp+' / '+game.nextXp;$('xpBar').style.width=(100*game.xp/game.nextXp)+'%';$('atkText').textContent=game.atk;$('potText').innerHTML=game.potions+' <span style="font-size:11px;color:#9ca6bc">瓶</span>';$('floorText').textContent=game.floor;$('killsText').textContent=game.kills;$('goldText').textContent=game.gold
+  }
+  function loop(now) {
+    if(!game||!game.running)return;const dt=Math.min(.05,(now-last)/1000||0);last=now;update(dt);draw();if(game.running)requestAnimationFrame(loop)
+  }
+  function action(a) {
+    if(a==='left')move(-1,0);if(a==='right')move(1,0);if(a==='up')move(0,-1);if(a==='down')move(0,1);if(a==='attack')attack()
+  }
+  document.addEventListener('keydown',e=> {
+    const k=e.key.toLowerCase();if(['arrowup','arrowdown','arrowleft','arrowright',' ','shift'].includes(k))e.preventDefault();if(k==='p') {
+      pause();return
+    }
+    if(k==='q') {
+      drink();return
+    }
+    if(k==='shift') {
+      dodge();return
+    }
+    if(k===' ') {
+      if(!keys.has(' '))attack();keys.add(' ');return
+    }
+    if(k==='e') {
+      if(game&&game.running&&!game.paused&&game.player.x===game.exit.x&&game.player.y===game.exit.y)checkTile();return
+    }
+    keys.add(k)
+  });
+  document.addEventListener('keyup',e=>keys.delete(e.key.toLowerCase()));window.addEventListener('blur',()=>keys.clear());
+  $('startBtn').onclick=startGame;$('howBtn').onclick=()=>showOverlay('how','如何在地窟中生存','WASD 或方向键移动；Space 朝面向方向附近攻击；Shift 朝面向方向闪避并短暂无敌；Q 喝药水。击败敌人获得经验和金币，升级会提升攻击力与生命上限。找到紫色出口进入下一层。',[ {
+    label:'明白了，开始探险',primary:true,action:startGame
+  }]);
+  document.querySelectorAll('[data-action]').forEach(b=> {
+    const act=()=>action(b.dataset.action);b.addEventListener('click',act);b.addEventListener('touchstart',e=> {
+      e.preventDefault();act()
+    }, {
+      passive:false
+    })
+  });
+  draw();
+})();
 </script>
 </body>
 </html>
