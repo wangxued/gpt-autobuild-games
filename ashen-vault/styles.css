@@ -1,0 +1,139 @@
+:root {
+  color-scheme: dark;
+  --ink: #e9dfc8;
+  --muted: #a69a82;
+  --gold: #c8a76c;
+  --verm: #a94e42;
+  --panel: rgba(25, 27, 28, .94);
+  --line: rgba(196, 165, 112, .28);
+}
+* { box-sizing: border-box; }
+html { min-width: 320px; background: #101319; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--ink);
+  background:
+    radial-gradient(ellipse at 50% -15%, rgba(101, 87, 65, .25), transparent 55%),
+    linear-gradient(180deg, #171b20, #0d1116 70%);
+  font-family: "Noto Sans SC", "Microsoft YaHei", sans-serif;
+}
+button { font: inherit; }
+.page-shell { width: min(1440px, calc(100% - 48px)); margin: 0 auto; padding: 24px 0 18px; }
+.masthead { display: flex; justify-content: space-between; align-items: center; padding: 0 4px 20px; border-bottom: 1px solid var(--line); }
+.brand { display: flex; align-items: center; gap: 13px; color: inherit; text-decoration: none; }
+.brand-seal { display: grid; place-items: center; width: 48px; height: 48px; border: 1px solid #b77c62; color: #e8c18a; background: #562f30; font: 27px "Ma Shan Zheng", serif; box-shadow: 4px 4px 0 #090b0e; }
+.brand small, .brand strong { display: block; }
+.brand small { color: #a99a81; font-size: 10px; letter-spacing: .2em; margin-bottom: 3px; }
+.brand strong { font: 25px "Ma Shan Zheng", serif; letter-spacing: .08em; }
+.brand strong span { color: #c8b99b; font-size: 18px; }
+.header-meta { color: #a89b83; font-size: 11px; letter-spacing: .12em; }
+.live-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #b66d53; margin: 0 8px 1px 0; box-shadow: 0 0 10px #c56d4d; }
+.game-layout { display: grid; grid-template-columns: minmax(0, 1fr) 304px; gap: 18px; padding-top: 20px; align-items: start; }
+.stage-heading { display: flex; justify-content: space-between; align-items: end; padding: 0 4px 12px; }
+.chapter-kicker { color: #bd8b65; font-size: 11px; letter-spacing: .16em; }
+.stage-heading h1 { font: 30px "Ma Shan Zheng", serif; letter-spacing: .1em; margin: 3px 0 0; color: #eee1c5; }
+.floor-stamp { display: flex; align-items: center; gap: 9px; color: #988b76; font-size: 10px; }
+.floor-stamp b { display: grid; place-items: center; width: 35px; height: 35px; border: 1px solid #9a7656; color: #e5c38c; font: 20px "Ma Shan Zheng", serif; transform: rotate(45deg); }
+.stage-frame { border: 1px solid #6e5b45; background: #11151a; box-shadow: 0 18px 55px #0008, inset 0 0 0 4px #1b1c1a; padding: 9px; }
+.stage-topline, .stage-bottomline { display: flex; justify-content: space-between; gap: 12px; color: #a99c83; font-size: 10px; letter-spacing: .08em; padding: 5px 5px 9px; }
+.stage-topline span:last-child { color: #b78b65; }
+.canvas-wrap { position: relative; overflow: hidden; border: 1px solid #4b463c; background: #0b0e12; line-height: 0; }
+canvas { display: block; width: 100%; height: auto; image-rendering: pixelated; touch-action: none; }
+.stage-bottomline { padding: 9px 5px 3px; color: #827863; }
+.screen-overlay { position: absolute; inset: 0; z-index: 4; display: grid; place-items: center; padding: 20px; background: linear-gradient(90deg, rgba(8,11,15,.8), rgba(8,11,15,.52)), rgba(8,11,15,.3); line-height: 1.6; }
+.screen-overlay.hidden { display: none; }
+.title-card { width: min(440px, 100%); text-align: center; padding: 26px 30px 22px; border: 1px solid rgba(198,162,111,.55); background: linear-gradient(145deg, rgba(30,31,30,.97), rgba(17,21,24,.97)); box-shadow: 0 15px 55px #000b, inset 0 0 0 5px rgba(198,162,111,.05); }
+.title-ornament { color: #c18a5c; font-size: 32px; margin-bottom: 5px; }
+.overline { color: #b58a65; font-size: 10px; letter-spacing: .22em; }
+.title-card h2 { font: 29px "Ma Shan Zheng", serif; letter-spacing: .12em; margin: 8px 0 12px; color: #f1dfbb; }
+.title-card p { color: #c1b49b; font-size: 12px; line-height: 2; margin: 0 auto 20px; max-width: 340px; }
+.title-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 9px; }
+.btn { cursor: pointer; border: 1px solid #8e704f; padding: 10px 20px; color: #e9d3a9; background: #292722; font-size: 12px; letter-spacing: .08em; transition: .15s ease; }
+.btn:hover { filter: brightness(1.2); transform: translateY(-1px); }
+.btn-primary { color: #211812; background: linear-gradient(180deg, #d2ad72, #a77c4e); border-color: #e4c18b; font-weight: 700; }
+.btn-ghost { background: transparent; border-color: #655b4b; color: #c1b49b; }
+.title-foot { color: #756e61; font-size: 9px; margin-top: 19px; letter-spacing: .08em; }
+.boss-banner { display: none; position: absolute; z-index: 3; top: 18px; left: 50%; transform: translateX(-50%); width: min(330px, 75%); text-align: center; color: #e7c4a2; font-size: 10px; text-shadow: 0 2px 4px #000; }
+.boss-banner.show { display: block; }
+.boss-banner b { display: block; font: 22px "Ma Shan Zheng", serif; color: #e5b08e; margin: 3px 0 7px; }
+.boss-health { height: 5px; background: #251c1c; border: 1px solid #70413d; }
+.boss-health i { display: block; height: 100%; width: 100%; background: #b34c48; transition: width .12s; }
+.toast { position: absolute; z-index: 5; left: 50%; bottom: 24px; transform: translate(-50%, 10px); padding: 8px 16px; border: 1px solid #9b7954; background: #171918eF; color: #e9d2a7; font-size: 11px; opacity: 0; transition: .2s; pointer-events: none; white-space: nowrap; }
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+.sidebar { display: grid; gap: 12px; }
+.paper-panel { position: relative; padding: 15px; border: 1px solid rgba(186,157,111,.28); background: linear-gradient(145deg, rgba(31,33,32,.97), rgba(20,24,26,.97)); box-shadow: 0 8px 24px #0003; }
+.panel-title { display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; border-bottom: 1px solid rgba(188,158,111,.2); color: #d5bd91; font: 17px "Ma Shan Zheng", serif; letter-spacing: .1em; }
+.panel-title i { color: #817967; font: normal 9px "Noto Sans SC", sans-serif; letter-spacing: .1em; }
+.player-name { display: flex; align-items: center; gap: 10px; padding: 13px 0; }
+.avatar-mark { display: grid; place-items: center; width: 37px; height: 37px; border: 1px solid #8f6c50; background: #3a3029; color: #e5c58f; font: 20px "Ma Shan Zheng", serif; }
+.player-name strong, .player-name small { display: block; }
+.player-name strong { font-size: 12px; color: #e6dac2; }
+.player-name small { color: #988d79; font-size: 9px; margin-top: 4px; }
+.meter-block { margin: 8px 0 11px; }
+.meter-label { display: flex; justify-content: space-between; color: #b8ad98; font-size: 10px; margin-bottom: 5px; }
+.meter-label b { color: #ddd0b5; font-weight: 500; }
+.meter { height: 6px; background: #101317; border: 1px solid #343630; overflow: hidden; }
+.meter i { display: block; height: 100%; width: 100%; transition: width .15s; }
+.hp-meter i { background: linear-gradient(90deg, #873d3a, #d2765c); }
+.xp-meter i { background: linear-gradient(90deg, #867047, #d5b36d); }
+.stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; margin-top: 14px; padding-top: 11px; border-top: 1px solid rgba(188,158,111,.18); }
+.stat-grid div { text-align: center; }
+.stat-grid small, .stat-grid b { display: block; }
+.stat-grid small { color: #897f6c; font-size: 9px; margin-bottom: 4px; }
+.stat-grid b { color: #e3c994; font-size: 14px; }
+.relic-slot { display: flex; align-items: center; gap: 9px; padding: 11px 0; border-bottom: 1px solid rgba(188,158,111,.12); }
+.relic-icon { display: grid; place-items: center; width: 32px; height: 32px; border: 1px solid #756247; background: #302b23; color: #d6b77e; font-size: 16px; }
+.relic-icon.talisman { color: #d88b73; background: #3a2927; }
+.relic-slot div { min-width: 0; flex: 1; }
+.relic-slot b, .relic-slot small { display: block; }
+.relic-slot b { color: #e0d2b5; font-size: 10px; }
+.relic-slot small { color: #918773; font-size: 9px; margin-top: 4px; }
+.relic-slot em { color: #827966; font-style: normal; font-size: 9px; }
+.passive-list { display: flex; flex-wrap: wrap; gap: 5px; padding-top: 10px; }
+.passive-list span { padding: 4px 7px; border: 1px solid #62523d; background: #29271f; color: #d4b981; font-size: 9px; }
+.passive-list .empty-passive { padding: 0; border: 0; background: transparent; color: #827966; }
+.event-log { min-height: 83px; max-height: 120px; overflow: auto; padding-top: 8px; }
+.event-log p { margin: 0; padding: 5px 0; border-bottom: 1px solid rgba(188,158,111,.1); color: #aaa18e; font-size: 10px; line-height: 1.6; }
+.event-log p.good { color: #9fc49a; }
+.event-log p.warn { color: #d58d78; }
+.event-log p.gold { color: #d6b87e; }
+.objective-panel p { color: #bcb19b; font-size: 10px; line-height: 1.8; margin: 10px 0; }
+.quest-progress { display: flex; justify-content: space-between; color: #8e836e; font-size: 9px; }
+.control-strip { display: flex; flex-wrap: wrap; gap: 15px; padding: 12px 5px 0; color: #908875; font-size: 9px; }
+kbd { display: inline-block; min-width: 19px; padding: 2px 4px; margin-right: 3px; border: 1px solid #4d4b42; border-bottom-width: 2px; color: #d5c49e; background: #202321; text-align: center; font: 9px ui-monospace, monospace; }
+.site-footer { display: flex; justify-content: space-between; gap: 10px; padding: 19px 4px 0; color: #716d61; font-size: 9px; letter-spacing: .08em; }
+.site-footer i { color: #9d7457; font-style: normal; padding: 0 5px; }
+.mobile-controls { display: none; }
+@media (max-width: 980px) { .game-layout { grid-template-columns: minmax(0,1fr) 270px; gap: 12px; } .page-shell { width: min(100% - 28px, 1440px); } }
+@media (max-width: 760px) {
+  .page-shell { width: calc(100% - 20px); padding-top: 14px; }
+  .masthead { padding-bottom: 13px; }
+  .header-meta { display: none; }
+  .game-layout { grid-template-columns: 1fr; padding-top: 14px; }
+  .sidebar { grid-template-columns: 1fr 1fr; }
+  .log-panel, .objective-panel { grid-column: span 1; }
+  .control-strip { display: none; }
+  .mobile-controls { display: flex; justify-content: space-between; align-items: center; padding: 12px 2px 0; }
+  .dpad { display: grid; grid-template-columns: repeat(3, 37px); grid-template-rows: repeat(2, 34px); gap: 3px; }
+  .dpad button, .mobile-actions button { border: 1px solid #66563f; background: #262722; color: #dfc99e; }
+  .dpad button:first-child { grid-column: 2; }
+  .dpad button:nth-child(2) { grid-column: 1; grid-row: 2; }
+  .dpad button:nth-child(3) { grid-column: 2; grid-row: 2; }
+  .dpad button:nth-child(4) { grid-column: 3; grid-row: 2; }
+  .mobile-actions { display: flex; gap: 5px; }
+  .mobile-actions button { width: 42px; height: 42px; border-radius: 50%; font: 17px "Ma Shan Zheng", serif; }
+}
+@media (max-width: 480px) {
+  .brand strong { font-size: 21px; }
+  .brand strong span { font-size: 15px; }
+  .stage-heading h1 { font-size: 25px; }
+  .stage-topline, .stage-bottomline { font-size: 9px; }
+  .sidebar { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .paper-panel { padding: 11px; }
+  .panel-title { font-size: 15px; }
+  .stat-grid { grid-template-columns: repeat(2,1fr); row-gap: 10px; }
+  .site-footer { font-size: 8px; }
+  .title-card { padding: 20px 16px; }
+  .title-card h2 { font-size: 24px; }
+}
