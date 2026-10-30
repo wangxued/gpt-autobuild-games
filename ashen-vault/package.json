@@ -1,0 +1,10 @@
+{
+  "name": "jinxu-shanhe-y iwenlu",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "烬墟：山河异闻录 - 东方志怪像素动作冒险",
+  "scripts": {
+    "test": "node --test tests/*.test.js"
+  }
+}
